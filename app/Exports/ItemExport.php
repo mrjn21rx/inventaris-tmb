@@ -1,37 +1,17 @@
 <?php
 namespace App\Exports;
 
-use App\Models\Item;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Illuminate\Support\Enumerable; // <-- Tambahkan baris ini
+use App\Models\Category;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ItemExport implements FromCollection, WithHeadings, WithMapping
+class ItemExport implements FromView, ShouldAutoSize
 {
-    private $rowNumber = 0;
-
-    // Tambahkan ": Enumerable" di akhir nama fungsi
-    public function collection(): Enumerable
+    public function view(): View
     {
-        return Item::with('category')->latest()->get();
-    }
-
-    public function map($item): array
-    {
-        return [
-            ++$this->rowNumber,
-            $item->name,
-            $item->category->name ?? '-',
-            $item->quantity,
-            $item->condition,
-            $item->location, 
-            $item->description
-        ];
-    }
-
-    public function headings(): array
-    {
-        return ['No', 'Nama Barang', 'Kategori', 'Jumlah', 'Kondisi', 'Lokasi', 'Keterangan'];
+        return view('items.excel', [
+            'categories' => Category::with('items')->get()
+        ]);
     }
 }

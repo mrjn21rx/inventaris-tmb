@@ -30,12 +30,17 @@
     </div>
 
     <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
-        <select name="condition" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-            <option value="Baik">Baik</option>
-            <option value="Rusak">Rusak</option>
-            <option value="Rusak Berat">Rusak Berat</option>
-        </select>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Kondisi</label>
+    <input type="text" name="condition" list="condition-options" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" required placeholder="Pilih atau ketik (ex: PSU OK)">
+    
+    <!-- Datalist ini membuat efek dropdown yang bisa diketik bebas -->
+    <datalist id="condition-options">
+        <option value="Baik">
+        <option value="Rusak">
+        <option value="Rusak Berat">
+        <option value="PSU OK">
+        <option value="PSU LEMAH">
+    </datalist>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>

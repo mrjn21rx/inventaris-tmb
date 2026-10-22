@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 Route::redirect('/', '/login');
 
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/items/export-excel', [ItemController::class, 'exportExcel'])->name('items.excel');
     Route::resource('items', ItemController::class);
     Route::resource('users', UserController::class)->except(['show', 'edit', 'update']);
+    Route::resource('categories', CategoryController::class)->only(['index', 'store', 'destroy']);
+    Route::get('/activity-logs', [App\Http\Controllers\LogController::class, 'index'])->name('logs.index');
     
 });
 

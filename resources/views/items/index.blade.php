@@ -17,7 +17,6 @@
                         </a>
                         
                         <div class="flex space-x-2">
-                            <!-- Tombol Excel akan ditambahkan di sini nanti -->
                              <a href="{{ route('items.excel') }}" class="px-5 py-2.5 bg-green-50 text-green-600 font-medium text-sm rounded-lg border border-green-100 hover:bg-green-100 transition">
                                 Export Excel
                             </a>
@@ -26,6 +25,18 @@
                             </a>
                         </div>
                     </div>
+
+                    <form method="GET" action="{{ route('items.index') }}" class="flex flex-col md:flex-row gap-3 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang..." class="border-gray-300 rounded-lg flex-1">
+                        <select name="condition" class="border-gray-300 rounded-lg">
+                            <option value="">Semua Kondisi</option>
+                            <option value="Baik" {{ request('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
+                            <option value="Rusak" {{ request('condition') == 'Rusak' ? 'selected' : '' }}>Rusak</option>
+                            <option value="Rusak Berat" {{ request('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                        </select>
+                        <button type="submit" class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-900">Cari / Filter</button>
+                        <a href="{{ route('items.index') }}" class="px-5 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-center hover:bg-gray-100">Reset</a>
+                    </form>
 
                     @if(session('success'))
                         <div class="p-4 mb-6 text-sm text-green-700 bg-green-50 rounded-lg border border-green-100">{{ session('success') }}</div>
@@ -68,19 +79,50 @@
                                     <td class="px-6 py-4 text-gray-500 truncate max-w-xs">{{ $item->description ?: '-' }}</td>
                                     <td class="px-6 py-4 text-center">
                                         <a href="{{ route('items.edit', $item->id) }}" class="text-blue-600 hover:text-blue-800 font-medium mr-3">Edit</a>
-                                        <form action="{{ route('items.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                        
+                                        <!-- KODE FORM HAPUS SUDAH DIPERBAIKI DI SINI -->
+                                        <form action="{{ route('items.destroy', $item->id) }}" method="POST" class="inline form-hapus">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Hapus</button>
                                         </form>
+
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- KODE JAVASCRIPT SWEETALERT SUDAH DITAMBAHKAN DI SINI -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let deleteForms = document.querySelectorAll('.form-hapus');
+            
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Data barang ini akan dihapus secara permanen!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444', 
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>
