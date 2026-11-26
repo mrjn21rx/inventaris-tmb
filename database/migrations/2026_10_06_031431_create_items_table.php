@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('items', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-        $table->string('name');
-        $table->integer('quantity');
-        $table->string('condition'); 
-        $table->string('location'); // <-- Kembalikan kolom lokasi
-        $table->text('description')->nullable(); 
-        $table->timestamps();
+        Schema::create('items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('code')->nullable(); // <-- Hapus ->after('name') di sini
+            $table->integer('quantity');
+            $table->string('condition'); 
+            $table->string('location'); 
+            $table->text('description')->nullable(); 
+            $table->timestamps();
         });
     }
 

@@ -14,8 +14,15 @@ class DashboardController extends Controller
         $newItems = Item::where('condition', 'Baru')->count();
         $goodItems = Item::where('condition', 'Baik')->count();
         $brokenItems = Item::where('condition', 'Rusak')->count();
+        $brokenHeavyItems = Item::where('condition', 'Rusak Berat')->count();
 
         // Mengirim data ke halaman dashboard
-        return view('dashboard', compact('totalItems', 'newItems', 'goodItems', 'brokenItems'));
+        return view('dashboard', compact(
+            'totalItems', 
+            'newItems', 
+            'goodItems', 
+            'brokenItems', 
+            'brokenHeavyItems'
+        ));
     }
 }
